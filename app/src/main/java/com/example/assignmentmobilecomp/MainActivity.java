@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     Button buttonSignUp;
     FirebaseAuth firebaseAuth;
     TextView textViewLogin;
+    private FirebaseAuth.AuthStateListener authStateListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,22 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.etPassword);
         buttonSignUp = findViewById(R.id.bSighUp);
         textViewLogin = findViewById(R.id.tvLogin);
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if(firebaseUser != null){
+                    Toast.makeText(MainActivity.this, "You are logged in", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else{
+                    //Toast.makeText(LoginActivity.this, "Please Login", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
 
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +96,18 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        firebaseAuth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }

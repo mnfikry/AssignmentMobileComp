@@ -45,9 +45,10 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "You are logged in", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 else{
-                    Toast.makeText(LoginActivity.this, "Please Login", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Please Login", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -92,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intSignUp = new Intent(LoginActivity.this,MainActivity.class);
                 startActivity(intSignUp);
+                finish();
             }
         });
     }
@@ -101,5 +103,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         firebaseAuth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }
