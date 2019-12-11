@@ -17,11 +17,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
     EditText editTextEmail;
     EditText editTextPassword;
+    String email,pwd;
     Button buttonSignUp;
     FirebaseAuth firebaseAuth;
     TextView textViewLogin;
@@ -31,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.etEmail);
         editTextPassword = findViewById(R.id.etPassword);
@@ -57,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = editTextEmail.getText().toString();
-                String pwd = editTextEmail.getText().toString();
+                email = editTextEmail.getText().toString();
+                pwd = editTextEmail.getText().toString();
 
                 if(email.isEmpty()){
                     editTextEmail.setError("Please enter your email");
@@ -79,7 +83,19 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "Sign Up Unsuccessful, Please Try Again", Toast.LENGTH_SHORT).show();
                             }
                             else{
-                                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                                String uid = firebaseAuth.getUid();
+                                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                                Toast.makeText(MainActivity.this, "Please Login", Toast.LENGTH_SHORT).show();
+                                databaseReference = firebaseDatabase.getReference("users").child(uid).child("email");
+                                databaseReference.setValue(email);
+                                databaseReference = firebaseDatabase.getReference("users").child(uid).child("name");
+                                databaseReference.setValue("Null");
+                                databaseReference = firebaseDatabase.getReference("users").child(uid).child("address");
+                                databaseReference.setValue("Null");
+                                databaseReference = firebaseDatabase.getReference("users").child(uid).child("birthday");
+                                databaseReference.setValue("Null");
+                                databaseReference = firebaseDatabase.getReference("users").child(uid).child("point");
+                                databaseReference.setValue(0);
                             }
                         }
                     });

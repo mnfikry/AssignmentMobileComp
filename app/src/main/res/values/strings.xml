@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Assignment Mobile Comp</string>
+    <string name="seat_prompt">Choose your seat</string>
+    <string-array name="seat">
+        <item>Seat 1</item>
+        <item>Seat 2</item>
+        <item>Seat 3</item>
+        <item>Seat 4</item>
+        <item>Seat 5</item>
+    </string-array>
+
 </resources>
