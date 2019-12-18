@@ -72,6 +72,7 @@ public class showtimeActivity extends AppCompatActivity {
         final String movieTitle = extras.getString("TITLE");
 
         Button bBook = findViewById(R.id.bBook);
+        Button bHome = findViewById(R.id.bHome);
         textViewTitle = findViewById(R.id.tvTitle);
         time = findViewById(R.id.tvTime);
         spinner = (Spinner)findViewById(R.id.spinnerTime);
@@ -129,6 +130,14 @@ public class showtimeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 userSeat = spinner.getSelectedItem().toString();
                 bookSeat(userSeat,movieTitle);
+            }
+        });
+
+        bHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(showtimeActivity.this,HomeActivity.class);
+                startActivity(intent);
             }
         });
     }
